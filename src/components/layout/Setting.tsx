@@ -1,22 +1,21 @@
 import { useState, memo } from 'react'
 import type { PropsWithChildren } from 'react'
-import type { Theme } from '@/hooks/theme'
-import type { SetState } from '@/interface'
+import type { ThemeState } from '@/models/theme'
 import { Drawer, Select, Switch } from 'antd'
 import { SettingOutlined, CloseOutlined } from '@ant-design/icons'
 import './Setting.less'
 
 interface Props {
-  theme: Theme
-  setTheme: SetState<Theme>
+  theme: ThemeState
+  setTheme: Function
 }
 
 function Setting(props: PropsWithChildren<Props>) {
   const { theme, setTheme } = props
   const [visible, setVisible] = useState(false)
 
-  function onChange(t: Partial<Theme>) {
-    setTheme(state => ({ ...state, ...t }))
+  function onChange(t: Partial<ThemeState>) {
+    setTheme(t)
   }
 
   return (

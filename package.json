@@ -3,7 +3,7 @@
   "scripts": {
     "analyze": "ANALYZE=1 umi dev",
     "start": "umi dev",
-    "build:dev": "cross-env UMI_ENV=dev umi build",
+    "build:dev": "cross-env umi build",
     "build": "cross-env UMI_ENV=online umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -35,7 +35,8 @@
     "react-dom": "17.x",
     "react-router-breadcrumbs-hoc": "^4.0.1",
     "react-use": "^17.2.4",
-    "umi": "^3.5.15"
+    "umi": "3.5.17",
+    "antd": "^4.16.13"
   },
   "devDependencies": {
     "@types/mockjs": "^1.0.4",
