@@ -1,5 +1,4 @@
 import { Card } from 'antd'
-import './index.less'
 
 export default function IndexPage() {
   return (

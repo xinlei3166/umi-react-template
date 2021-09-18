@@ -1,7 +1,7 @@
 import type { Model } from 'dva'
 import type { AnyAction } from 'redux'
 
-export interface ThemeState {
+export interface ThemeModelState {
   theme: 'dark' | 'light'
   mode: 'vertical' | 'inline' | 'horizontal'
   width: string | number
@@ -11,7 +11,7 @@ export interface ThemeState {
   showBreadcrumb: boolean
 }
 
-const initialState: ThemeState = {
+const initialState: ThemeModelState = {
   theme: 'dark',
   mode: 'inline',
   width: '208px',
@@ -25,7 +25,7 @@ const theme: Model = {
   namespace: 'theme',
   state: initialState,
   reducers: {
-    changeTheme(state: ThemeState, { payload }: AnyAction) {
+    changeTheme(state: ThemeModelState, { payload }: AnyAction) {
       return { ...state, ...payload }
     }
   }

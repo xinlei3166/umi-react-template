@@ -3,13 +3,12 @@ import type { Dispatch, SetStateAction } from 'react'
 
 export type Request = Record<string, any>
 
-export type RequestMethod = 'get' | 'post' | 'put' | 'patch' | 'delete'
-
 export type ResponseData = null | any[] | {}
 
 export interface Response {
   code: number | string
   data: ResponseData
+  [key: string]: any
 }
 
 // Pagination

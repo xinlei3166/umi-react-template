@@ -11,13 +11,19 @@ async function getUserinfo() {
   return obj
 }
 
+export interface UserModelState {
+  name: string
+}
+
+const initialState: UserModelState = {
+  name: ''
+}
+
 const user: Model = {
   namespace: 'user',
-  state: {
-    user: ''
-  },
+  state: initialState,
   reducers: {
-    changeUserinfo(state: any, { payload }: AnyAction) {
+    changeUserinfo(state: UserModelState, { payload }: AnyAction) {
       return { ...state, ...payload }
     }
   },

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import type { AxiosRequestConfig, Method } from 'axios'
 import qs from 'qs'
 import { message } from 'antd'
 
@@ -77,14 +78,7 @@ axios.interceptors.response.use(
   }
 )
 
-export type Method = 'get' | 'post' | 'put' | 'patch' | 'delete'
-
-export interface Config {
-  method?: Method
-  url?: string
-  data?: any
-  [key: string]: any
-}
+export type Config = AxiosRequestConfig & Record<string, any>
 
 function _request(config: Config = {}): Promise<any> {
   return new Promise((resolve, reject) => {
@@ -99,7 +93,15 @@ function _request(config: Config = {}): Promise<any> {
   })
 }
 
-async function request(config: Config = {}): Promise<any> {
+async function request(
+  method: Method,
+  url: string,
+  data: any,
+  config: Config = {}
+): Promise<any> {
+  config.method = method
+  config.url = url
+  config.data = data
   try {
     return await _request(config)
   } catch (e) {
@@ -108,32 +110,21 @@ async function request(config: Config = {}): Promise<any> {
   }
 }
 
-function setConfig(
-  method: Method,
+async function get(
   url: string,
-  data: any,
+  params: any,
   config: Config = {}
-) {
-  config.method = method
-  config.url = url
-  if (method !== 'get') {
-    config.data = data
-  }
-}
-
-async function get(url: string, config: Config = {}): Promise<any> {
-  setConfig('get', url, null, config)
-  return await request(config)
+): Promise<any> {
+  config.params = params
+  return await request('get', url, null, config)
 }
 
 async function post(url: string, data: any, config: Config = {}): Promise<any> {
-  setConfig('post', url, data, config)
-  return await request(config)
+  return await request('post', url, data, config)
 }
 
 async function put(url: string, data: any, config: Config = {}): Promise<any> {
-  setConfig('put', url, data, config)
-  return await request(config)
+  return await request('put', url, data, config)
 }
 
 async function patch(
@@ -141,8 +132,7 @@ async function patch(
   data: any,
   config: Config = {}
 ): Promise<any> {
-  setConfig('patch', url, data, config)
-  return await request(config)
+  return await request('patch', url, data, config)
 }
 
 async function _delete(
@@ -150,8 +140,7 @@ async function _delete(
   data: any,
   config: Config = {}
 ): Promise<any> {
-  setConfig('delete', url, data, config)
-  return await request(config)
+  return await request('delete', url, data, config)
 }
 
 export default {

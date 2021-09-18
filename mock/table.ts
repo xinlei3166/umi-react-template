@@ -30,5 +30,5 @@ const response = function () {
 
 // umi mock data
 export default {
-  'GET /api/table': Mock.mock(response())
+  'GET /api/table/data': Mock.mock(response())
 }

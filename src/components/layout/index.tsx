@@ -1,12 +1,11 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, memo } from 'react'
 import type { PropsWithChildren } from 'react'
 import { Layout, Menu } from 'antd'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
-import type { Dispatch } from 'umi'
+import type { ConnectProps, ThemeModelState } from 'umi'
 import { Link, Helmet, connect } from 'umi'
-import type { ThemeState } from '@/models/theme'
 import type { BreadcrumbsRoute } from 'react-router-breadcrumbs-hoc'
-import withBreadcrumbs from 'react-router-breadcrumbs-hoc'
+import { getBreadcrumbs } from 'react-router-breadcrumbs-hoc'
 import { useMount } from 'react-use'
 import Nav from './Nav'
 import Breadcrumb from './Breadcrumb'
@@ -26,6 +25,18 @@ interface MenuItem {
   routes: MenuItem[]
 }
 
+interface LayoutProps extends ConnectProps {
+  theme: ThemeModelState
+}
+
+const flattenRoutes = (routes: BreadcrumbsRoute[]) =>
+  routes.reduce((arr, route: BreadcrumbsRoute): BreadcrumbsRoute[] => {
+    if (route.routes) {
+      return arr.concat([route, ...flattenRoutes(route.routes)])
+    }
+    return arr.concat(route)
+  }, [] as BreadcrumbsRoute[])
+
 // const areEqual = (
 //   prevProps: PropsWithChildren<RouteProps>,
 //   nextProps: PropsWithChildren<RouteProps>
@@ -39,7 +50,7 @@ function BaseLayout({
   routes,
   theme,
   dispatch
-}: PropsWithChildren<RouteProps & { theme: ThemeState; dispatch: Dispatch }>) {
+}: PropsWithChildren<RouteProps & LayoutProps>) {
   const [selectedKeys, setSelectedKeys] = useState<any[]>([])
   const [openKeys, setOpenKeys] = useState<any[]>([])
 
@@ -51,6 +62,23 @@ function BaseLayout({
     setOpenKeys(keyPath.slice(1))
     setSelectedKeys([key])
   }
+
+  const wbRoutes = useMemo(
+    () => flattenRoutes(routes?.[0].routes?.filter(r => r.path) as any),
+    [routes]
+  )
+
+  const breadcrumbs: any = useMemo(
+    () =>
+      getBreadcrumbs({
+        routes: wbRoutes,
+        location,
+        options: {
+          disableDefaults: true
+        }
+      }),
+    [wbRoutes, location]
+  )
 
   const menuRoutes = useMemo(
     () => routes?.[0].routes?.filter(r => !r.hidden && r.path) as MenuItem[],
@@ -77,7 +105,7 @@ function BaseLayout({
   }
 
   const setTheme = (payload: Record<string, any>) => {
-    dispatch({ type: 'theme/changeTheme', payload })
+    dispatch?.({ type: 'theme/changeTheme', payload })
   }
 
   const onCollapse = () => {
@@ -100,15 +128,21 @@ function BaseLayout({
   }
 
   // menu
+  const menuItem = (menu: MenuItem) =>
+    location?.pathname === menu.path ? (
+      <span className="menu-item-link">
+        <Icon type={menu.icon} className="icon"></Icon>
+        <span className="menu-item-title">{menu.breadcrumb}</span>
+      </span>
+    ) : (
+      <Link className="menu-item-link" to={menu.path}>
+        <Icon type={menu.icon} className="icon"></Icon>
+        <span className="menu-item-title">{menu.breadcrumb}</span>
+      </Link>
+    )
+
   const menuItems = (menus: MenuItem[]) =>
-    menus.map(menu => (
-      <Menu.Item key={menu.name}>
-        <Link className="menu-item-link" to={menu.path}>
-          <Icon type={menu.icon} className="icon"></Icon>
-          <span className="menu-item-title">{menu.breadcrumb}</span>
-        </Link>
-      </Menu.Item>
-    ))
+    menus.map(menu => <Menu.Item key={menu.name}>{menuItem(menu)}</Menu.Item>)
 
   const subMenus = (menus: MenuItem[]) =>
     menus.map(menu => (
@@ -120,91 +154,83 @@ function BaseLayout({
         {menuItems(menu?.routes?.filter(r => !r.hidden && r.path))}
       </Menu.SubMenu>
     ))
+  console.log('Layout')
 
-  const _BaseLayout = withBreadcrumbs(
-    routes?.[0].routes?.filter(r => r.path) as any,
-    {
-      disableDefaults: true
-    }
-  )(({ breadcrumbs }: any) => {
-    const route = breadcrumbs.find(
-      (breadcrumb: BreadcrumbsRoute) =>
-        breadcrumb.match.url === location?.pathname
-    )
-    const title = route?.breadcrumb?.props.children
-      ? `${route.breadcrumb?.props?.children} - react-umi-dva-windicss`
-      : 'react-umi-dva-windicss'
+  const route = breadcrumbs.find(
+    (breadcrumb: BreadcrumbsRoute) =>
+      breadcrumb.match.url === location?.pathname
+  )
+  const title = route?.breadcrumb?.props.children
+    ? `${route.breadcrumb?.props?.children} - react-umi-dva-windicss`
+    : 'react-umi-dva-windicss'
 
-    return (
-      <>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <Layout id="layout" style={{ overflow: 'auto', height: '100vh' }}>
-          <div
-            className="layout-fixed-stuff"
-            style={{
-              width: theme.collapsed ? theme.collapsedWidth : theme.width
-            }}
-          ></div>
-          <Layout.Sider
-            collapsible
-            collapsed={theme.collapsed}
-            trigger={null}
-            theme={theme.theme}
-            width={theme.width}
-            collapsedWidth={theme.collapsedWidth}
-            className={classNames('layout-sider', {
-              'show-name': theme.showSubMenuName
-            })}
-          >
-            <div className="logo">
-              <Link to="/" className="logo-link">
-                <img className="logo-img" src={logo} alt="logo" />
-                {!theme.collapsed ? (
-                  <h1 className="logo-text">React Demo</h1>
-                ) : null}
-              </Link>
-            </div>
-            <div className="layout-menu-wrap">
-              <Menu
-                selectedKeys={selectedKeys}
-                openKeys={openKeys}
-                className="sider-menu"
-                theme={theme.theme}
-                mode={theme.mode}
-                onOpenChange={onOpenChange}
-                onClick={onClick}
-              >
-                {subMenus(menuRoutes)}
-              </Menu>
-            </div>
-          </Layout.Sider>
-          <Layout>
-            <Layout.Header className="layout-header">
-              {theme.collapsed ? (
-                <MenuUnfoldOutlined className="trigger" onClick={onCollapse} />
-              ) : (
-                <MenuFoldOutlined className="trigger" onClick={onCollapse} />
-              )}
-              <Nav />
-            </Layout.Header>
-            <Layout.Content className="layout-content-wrap">
-              {theme.showBreadcrumb ? (
-                <div className="layout-breadcrumb">
-                  <Breadcrumb location={location} breadcrumbs={breadcrumbs} />
-                </div>
+  return (
+    <>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
+      <Layout id="layout" style={{ overflow: 'auto', height: '100vh' }}>
+        <div
+          className="layout-fixed-stuff"
+          style={{
+            width: theme.collapsed ? theme.collapsedWidth : theme.width
+          }}
+        ></div>
+        <Layout.Sider
+          collapsible
+          collapsed={theme.collapsed}
+          trigger={null}
+          theme={theme.theme}
+          width={theme.width}
+          collapsedWidth={theme.collapsedWidth}
+          className={classNames('layout-sider', {
+            'show-name': theme.showSubMenuName
+          })}
+        >
+          <div className="logo">
+            <Link to="/" className="logo-link">
+              <img className="logo-img" src={logo} alt="logo" />
+              {!theme.collapsed ? (
+                <h1 className="logo-text">React Demo</h1>
               ) : null}
-              <div className="layout-content">{children}</div>
-            </Layout.Content>
-          </Layout>
+            </Link>
+          </div>
+          <div className="layout-menu-wrap">
+            <Menu
+              selectedKeys={selectedKeys}
+              openKeys={openKeys}
+              className="sider-menu"
+              theme={theme.theme}
+              mode={theme.mode}
+              onOpenChange={onOpenChange}
+              onClick={onClick}
+            >
+              {subMenus(menuRoutes)}
+            </Menu>
+          </div>
+        </Layout.Sider>
+        <Layout>
+          <Layout.Header className="layout-header">
+            {theme.collapsed ? (
+              <MenuUnfoldOutlined className="trigger" onClick={onCollapse} />
+            ) : (
+              <MenuFoldOutlined className="trigger" onClick={onCollapse} />
+            )}
+            <Nav />
+          </Layout.Header>
+          <Layout.Content className="layout-content-wrap">
+            {theme.showBreadcrumb ? (
+              <div className="layout-breadcrumb">
+                <Breadcrumb location={location} breadcrumbs={breadcrumbs} />
+              </div>
+            ) : null}
+            <div className="layout-content">{children}</div>
+          </Layout.Content>
         </Layout>
-        <Setting theme={theme} setTheme={setTheme} />
-      </>
-    )
-  })
-
-  return <_BaseLayout />
+      </Layout>
+      <Setting />
+    </>
+  )
 }
 
 export default connect((state: any) => ({

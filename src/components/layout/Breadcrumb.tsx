@@ -1,4 +1,4 @@
-import { useMemo, memo } from 'react'
+import { memo } from 'react'
 import type { PropsWithChildren } from 'react'
 import { Breadcrumb } from 'antd'
 import { Link, history } from 'umi'
@@ -17,11 +17,6 @@ function BaseBreadcrumb({
   location,
   breadcrumbs
 }: PropsWithChildren<RouteProps & { breadcrumbs: any[] }>) {
-  // const _routes = useMemo(
-  //   () => routes?.[0].routes?.filter(r => r.path),
-  //   [routes]
-  // ) as any
-
   const paths = breadcrumbs.map(
     (breadcrumb: BreadcrumbsRoute) => breadcrumb.match.path
   )

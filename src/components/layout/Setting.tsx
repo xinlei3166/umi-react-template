@@ -1,21 +1,26 @@
-import { useState, memo } from 'react'
+import { useState } from 'react'
 import type { PropsWithChildren } from 'react'
-import type { ThemeState } from '@/models/theme'
+import type { ThemeModelState } from 'umi'
+import { connect } from 'umi'
 import { Drawer, Select, Switch } from 'antd'
 import { SettingOutlined, CloseOutlined } from '@ant-design/icons'
 import './Setting.less'
 
-interface Props {
-  theme: ThemeState
-  setTheme: Function
-}
-
-function Setting(props: PropsWithChildren<Props>) {
-  const { theme, setTheme } = props
+function Setting({ theme, dispatch }: PropsWithChildren<any>) {
   const [visible, setVisible] = useState(false)
+  const setTheme = (payload: Record<string, any>) => {
+    dispatch?.({ type: 'theme/changeTheme', payload })
+  }
 
-  function onChange(t: Partial<ThemeState>) {
+  function onChange(t: Partial<ThemeModelState>) {
     setTheme(t)
+  }
+
+  function onChangeTheme(t: Partial<ThemeModelState>) {
+    onChange(t)
+    const el = document.querySelector('html')
+    el?.classList.toggle('dark', t.theme === 'dark')
+    localStorage.theme = t.theme
   }
 
   return (
@@ -45,7 +50,7 @@ function Setting(props: PropsWithChildren<Props>) {
           <Select
             value={theme.theme}
             className="select"
-            onChange={value => onChange({ theme: value })}
+            onChange={value => onChangeTheme({ theme: value })}
           >
             <Select.Option key="dark" value="dark">
               暗黑
@@ -96,4 +101,6 @@ function Setting(props: PropsWithChildren<Props>) {
   )
 }
 
-export default memo(Setting)
+export default connect((state: any) => ({
+  theme: state.theme
+}))(Setting)

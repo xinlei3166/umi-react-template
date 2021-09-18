@@ -11,5 +11,18 @@ export default defineConfig({
   shortcuts: {
     btn: 'rounded border border-gray-300 text-gray-600 px-4 py-2 m-2 inline-block hover:shadow'
   },
-  theme: {}
+  theme: {
+    extend: {
+      lineHeight: {
+        antd: 1.5715,
+        unset: 'unset',
+        inherit: 'inherit'
+      },
+      colors: {
+        pink: {
+          deep: '#ff1493'
+        }
+      }
+    }
+  }
 })

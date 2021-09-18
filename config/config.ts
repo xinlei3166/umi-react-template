@@ -10,9 +10,11 @@ const vars = {
 
 export default defineConfig({
   title: false,
-  mfsu: {},
-  webpack5: {},
+  // webpack5 不支持 windicss
+  // mfsu: {},
+  // webpack5: {},
   dynamicImport: {},
+  esbuild: {},
   hash: true,
   antd: {},
   dva: {

@@ -14,7 +14,7 @@ const defaultPagination: Pagination = {
   pageSizeOptions: ['10', '20', '30', '40', '50']
 }
 
-export default function usePagination(options?: Record<string, any>) {
+export function usePagination(options?: Record<string, any>) {
   const pag = options || {}
   const [pagination, setPagination] = useState<Pagination>({
     ...defaultPagination,
@@ -22,7 +22,7 @@ export default function usePagination(options?: Record<string, any>) {
   })
 
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<any[]>([])
+  const [data, setData] = useState<any>()
 
   return {
     pagination,
