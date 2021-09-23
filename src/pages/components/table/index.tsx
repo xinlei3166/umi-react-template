@@ -1,45 +1,14 @@
 import { useEffect } from 'react'
-import { Card, Table } from 'antd'
-import { useMount } from 'react-use'
-import type { Pagination } from '@/interface'
+import { Card, Table, Button } from 'antd'
 import { usePagination } from '@/hooks/pagination'
 import { getData } from '@/api'
+import { getTableColumns } from './columns'
+import './index.less'
 
 export default function TablePage() {
-  const { pagination, setPagination, loading, setLoading, data, setData } =
-    usePagination()
-
-  const columns = [
+  const columns = getTableColumns([
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id'
-    },
-    {
-      title: '姓名',
-      dataIndex: 'name',
-      key: 'name'
-    },
-    {
-      title: '年龄',
-      dataIndex: 'age',
-      key: 'age'
-    },
-    {
-      title: '爱好',
-      dataIndex: 'hobby',
-      key: 'hobby'
-    },
-    {
-      title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime'
-    },
-    {
-      title: '操作',
-      dataIndex: 'operation',
       key: 'operation',
-      width: 150,
       render: () => (
         <>
           <span className="btn" onClick={onEdit}>
@@ -51,12 +20,16 @@ export default function TablePage() {
         </>
       )
     }
-  ]
-  console.log('222222')
-  useMount(init)
+  ])
+
+  const { pagination, setPagination, loading, setLoading, data, setData } =
+    usePagination()
+
+  useEffect(() => {
+    init()
+  }, [pagination.current, pagination.pageSize])
 
   async function init() {
-    console.log(3333)
     setLoading(true)
     const res = await getData({
       pageNum: pagination.current,
@@ -68,16 +41,12 @@ export default function TablePage() {
     setPagination(state => ({ ...state, total: res.total }))
   }
 
-  async function onSearch(search: Object) {
-    console.log(search)
-    pagination.current = 1
-    await init()
-  }
-
-  async function onTableChange(pag: Pagination) {
-    pagination.current = pag.current
-    pagination.pageSize = pag.pageSize
-    await init()
+  async function onSearch() {
+    if (pagination.current === 1) {
+      await init()
+      return
+    }
+    setPagination(state => ({ ...state, current: 1 }))
   }
 
   function onEdit() {
@@ -90,10 +59,11 @@ export default function TablePage() {
 
   return (
     <Card>
+      <Button onClick={onSearch}>点击</Button>
       <Table
         rowKey="id"
         loading={loading}
-        pagination={false}
+        pagination={pagination}
         columns={columns}
         dataSource={data}
       ></Table>

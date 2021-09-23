@@ -54,3 +54,51 @@ export const model = {
   name4: null,
   name5: null
 }
+
+// table columns
+export const getTableColumns = (
+  tableColumns: { key: string; render: Function; [key: string]: any }[] = []
+) => {
+  const _tableColumns: Record<string, any>[] = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id'
+    },
+    {
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age'
+    },
+    {
+      title: '爱好',
+      dataIndex: 'hobby',
+      key: 'hobby'
+    },
+    {
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      key: 'updateTime'
+    },
+    {
+      title: '操作',
+      dataIndex: 'operation',
+      key: 'operation',
+      width: 150
+    }
+  ]
+
+  for (const tc of tableColumns) {
+    const index = _tableColumns.findIndex(c => c.key === tc.key)
+    if (index !== -1) {
+      _tableColumns[index] = { ..._tableColumns[index], ...tc }
+    }
+  }
+
+  return _tableColumns
+}

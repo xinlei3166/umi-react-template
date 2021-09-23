@@ -1,6 +1,7 @@
-import { useState, useMemo, memo } from 'react'
+import { useState, useMemo } from 'react'
 import type { PropsWithChildren } from 'react'
-import { Layout, Menu } from 'antd'
+import { ConfigProvider, Layout, Menu } from 'antd'
+import zhCN from 'antd/lib/locale/zh_CN'
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons'
 import type { ConnectProps, ThemeModelState } from 'umi'
 import { Link, Helmet, connect } from 'umi'
@@ -124,7 +125,7 @@ function BaseLayout({
 
   // login layout
   if (location?.pathname === '/login') {
-    return <>{children}</>
+    return <ConfigProvider locale={zhCN}>{children}</ConfigProvider>
   }
 
   // menu
@@ -154,7 +155,6 @@ function BaseLayout({
         {menuItems(menu?.routes?.filter(r => !r.hidden && r.path))}
       </Menu.SubMenu>
     ))
-  console.log('Layout')
 
   const route = breadcrumbs.find(
     (breadcrumb: BreadcrumbsRoute) =>
@@ -165,7 +165,7 @@ function BaseLayout({
     : 'react-umi-dva-windicss'
 
   return (
-    <>
+    <ConfigProvider locale={zhCN}>
       <Helmet>
         <title>{title}</title>
       </Helmet>
@@ -229,7 +229,7 @@ function BaseLayout({
         </Layout>
       </Layout>
       <Setting />
-    </>
+    </ConfigProvider>
   )
 }
 

@@ -1,6 +1,8 @@
 import Mock from 'mockjs'
+// @ts-ignore
+import { delay } from 'roadhog-api-doc'
 
-// Mock.setup({ timeout: 300 })
+// Mock.setup({ timeout: 1000 })
 
 // 获取 mock.Random 对象
 const Random = Mock.Random
@@ -29,6 +31,10 @@ const response = function () {
 // Mock.mock('/api/table', 'get', response)
 
 // umi mock data
-export default {
-  'GET /api/table/data': Mock.mock(response())
+const proxy = {
+  'GET /api/table/data': (req: any, res: any,) => {
+    res.send(Mock.mock(response()))
+  }
 }
+
+export default delay(proxy, 800)

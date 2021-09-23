@@ -23,6 +23,8 @@ export interface Pagination {
   showQuickJumper: boolean
   showSizeChanger: boolean
   pageSizeOptions: string[]
+  onChange?: Function
+  onShowSizeChange?: Function
 }
 
 export interface Visible {

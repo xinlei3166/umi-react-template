@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from 'react'
-import { useState, memo } from 'react'
+import { useState } from 'react'
 import { useMount } from 'react-use'
 import { Card, Input, Button } from 'antd'
 import type { ConnectProps, UserModelState } from 'umi'
@@ -13,10 +13,9 @@ function StorePage({ user, dispatch }: PropsWithChildren<StoreProps>) {
   const [name, setName] = useState('君惜')
 
   const onSubmit = () => {
-    console.log('store-sub')
     dispatch?.({ type: 'user/changeUserinfo', payload: { name } })
   }
-  console.log('store')
+
   useMount(onSubmit)
 
   return (

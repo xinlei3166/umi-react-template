@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Pagination } from '@/interface'
+import type { TablePaginationConfig } from 'antd'
 
 const defaultPagination: Pagination = {
   size: 'small',
@@ -21,11 +22,23 @@ export function usePagination(options?: Record<string, any>) {
     ...pag
   })
 
+  const onChange = (page: number, pageSize: number) => {
+    setPagination(state => ({ ...state, current: page, pageSize }))
+  }
+
+  const onShowSizeChange = (current: number, size: number) => {
+    setPagination(state => ({ ...state, current, pageSize: size }))
+  }
+
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<any>()
 
   return {
-    pagination,
+    pagination: {
+      ...pagination,
+      onChange: pagination.onChange || onChange,
+      onShowSizeChange: pagination.onShowSizeChange || onShowSizeChange
+    } as Pagination & TablePaginationConfig,
     setPagination,
     loading,
     setLoading,
