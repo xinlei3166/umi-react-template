@@ -1,7 +1,7 @@
 import { message } from 'antd'
 
 export function typeOf(obj: any) {
-  const toString = Object.prototype
+  const { toString } = Object.prototype
   const map = {
     '[object Boolean]': 'boolean',
     '[object Number]': 'number',

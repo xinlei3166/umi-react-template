@@ -37,4 +37,4 @@ const proxy = {
   }
 }
 
-export default delay(proxy, 800)
+export default delay(proxy, 600)

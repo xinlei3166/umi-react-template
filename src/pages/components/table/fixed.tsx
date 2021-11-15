@@ -1,12 +1,11 @@
-import { useEffect } from 'react'
+import { useMount } from 'react-use'
 import { Card, Table } from 'antd'
 import { usePagination } from '@/hooks/pagination'
 import { getData } from '@/api'
 import { getTableColumns } from './columns'
-import './index.less'
 
 export default function FixedTablePage() {
-  const columns = getTableColumns([
+  const tableColumns = getTableColumns([
     {
       key: 'operation',
       render: () => (
@@ -25,15 +24,14 @@ export default function FixedTablePage() {
   const { pagination, setPagination, loading, setLoading, data, setData } =
     usePagination()
 
-  useEffect(() => {
-    init()
-  }, [pagination.current, pagination.pageSize])
+  useMount(init)
 
-  async function init() {
+  async function init(params = {}) {
     setLoading(true)
     const res = await getData({
       pageNum: pagination.current,
-      pageSize: pagination.pageSize
+      pageSize: pagination.pageSize,
+      ...params
     })
     setLoading(false)
     if (res.code !== 0) return
@@ -41,12 +39,13 @@ export default function FixedTablePage() {
     setPagination(state => ({ ...state, total: res.total }))
   }
 
-  async function onSearch() {
-    if (pagination.current === 1) {
-      await init()
-      return
-    }
-    setPagination(state => ({ ...state, current: 1 }))
+  async function onTableChange(pag: Record<string, any>) {
+    setPagination(state => ({
+      ...state,
+      current: pag.current,
+      pageSize: pag.pageSize
+    }))
+    await init({ pageNum: pag.current, pageSize: pag.pageSize })
   }
 
   function onEdit() {
@@ -63,10 +62,11 @@ export default function FixedTablePage() {
         rowKey="id"
         loading={loading}
         pagination={pagination}
-        columns={columns}
+        columns={tableColumns}
         dataSource={data}
         scroll={{ y: 'calc(100vh - 94px - 88px - 58px - 56px)' }}
-      ></Table>
+        onChange={onTableChange}
+      />
     </Card>
   )
 }

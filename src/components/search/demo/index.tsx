@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react'
+import { useState, useMemo } from 'react'
 import { useMount } from 'react-use'
 import { Card, Table, Select } from 'antd'
 import Search from '@/components/search'
@@ -6,7 +6,7 @@ import { usePagination } from '@/hooks/pagination'
 import { getData } from '@/api'
 import { getColumns, getTableColumns } from './columns'
 
-export default function TablePage() {
+export default function DemoPage() {
   const [search, setSearch] = useState<Record<string, any>>({
     name1: undefined,
     name2: undefined,

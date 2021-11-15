@@ -1,4 +1,4 @@
-# umi-dva-windicss-template
+# umi-windicss-template
 
 ## Getting Started
 

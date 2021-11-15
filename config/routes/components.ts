@@ -72,6 +72,14 @@ export default [
     routes: [
       {
         exact: true,
+        icon: 'iconsearch',
+        breadcrumb: 'search',
+        name: 'search',
+        path: '/others/search',
+        component: '@/components/search/demo'
+      },
+      {
+        exact: true,
         icon: 'iconsetting',
         breadcrumb: 'react',
         name: 'others_react',
