@@ -4,6 +4,7 @@
     "analyze": "ANALYZE=1 umi dev",
     "start": "umi dev",
     "build:dev": "cross-env umi build",
+    "build:github": "cross-env UMI_ENV=github umi build",
     "build": "cross-env UMI_ENV=online umi build",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
