@@ -10,6 +10,7 @@ const vars = {
 
 export default defineConfig({
   title: false,
+  favicon: '/favicon.ico',
   // webpack5 不支持 windicss
   // mfsu: {},
   // webpack5: {},
