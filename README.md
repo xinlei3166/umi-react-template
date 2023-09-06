@@ -4,7 +4,7 @@ umi-react-template
 
 ## Framework packages
 
-Umi4 + React18 + Pinia + Vue Router + TypeScript + Ant Design Vue
+Umi4 + React18 + Redux + React Router + TypeScript + Ant Design
 
 ## Package Manager
 pnpm
