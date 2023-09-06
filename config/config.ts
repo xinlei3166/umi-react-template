@@ -25,9 +25,7 @@ export default defineConfig({
   // legacy: {},
   routes,
   fastRefresh: true,
-  targets: {
-    ie: 11
-  },
+  // targets: {},
   // @ts-ignore
   chainWebpack(memo, { env, webpack }) {
     memo.plugin('@unocss/webpack').use(UnoCSS)
