@@ -7,9 +7,9 @@ import {
   Outlet,
   useLocation,
   useOutletContext,
-  useSelectedRoutes
+  useSelectedRoutes,
+  Helmet
 } from '@umijs/max'
-import { Helmet } from 'react-helmet-async'
 import { useMount } from 'ahooks'
 import Nav from './Nav'
 import Siderbar from './Siderbar'
@@ -51,9 +51,9 @@ function BaseLayout() {
   return (
     <ConfigProvider {...configProvider}>
       <TokenContextHolder />
-      {/*<Helmet>*/}
-      {/*  <title>{title}</title>*/}
-      {/*</Helmet>*/}
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <Layout id="layout" style={{ overflow: 'auto', height: '100vh' }}>
         <div
           className="layout-fixed-stuff"

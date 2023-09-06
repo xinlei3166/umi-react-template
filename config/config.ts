@@ -10,6 +10,7 @@ const vars = {
 export default defineConfig({
   title: undefined,
   favicons: ['/favicon.ico'],
+  helmet: true,
   mfsu: {
     esbuild: true,
     exclude: ['react-router', 'react-router-dom']
