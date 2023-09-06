@@ -1,9 +1,6 @@
 import { memo } from 'react'
-import type { PropsWithChildren } from 'react'
 import { Breadcrumb } from 'antd'
-import { Link, history } from 'umi'
-import type { BreadcrumbsRoute } from 'react-router-breadcrumbs-hoc'
-import type { RouteProps } from '@/interface'
+import { Link, useNavigate, useLocation, useSelectedRoutes } from '@umijs/max'
 
 function cleanupBreadcrumbs(breadcrumbs: any[]) {
   breadcrumbs[breadcrumbs.length - 1].unlink = true
@@ -13,30 +10,33 @@ function cleanupBreadcrumbs(breadcrumbs: any[]) {
   return breadcrumbs
 }
 
-function BaseBreadcrumb({
-  location,
-  breadcrumbs
-}: PropsWithChildren<RouteProps & { breadcrumbs: any[] }>) {
-  const paths = breadcrumbs.map(
-    (breadcrumb: BreadcrumbsRoute) => breadcrumb.match.path
+function BaseBreadcrumb() {
+  const routes = useSelectedRoutes()
+  const breadcrumbs = cleanupBreadcrumbs(
+    routes.map(r => ({
+      pathname: r.pathname,
+      pathnameBase: r.pathnameBase,
+      route: r.route
+    }))
   )
-  if (!paths.includes(location?.pathname)) {
-    history.push('/404')
-  }
+  // const paths = breadcrumbs.map(
+  //   (breadcrumb: BreadcrumbsRoute) => breadcrumb.match.path
+  // )
+  // const navigate = useNavigate()
+  // const location = useLocation()
+  // if (!paths.includes(location?.pathname)) {
+  //   navigate('/404')
+  // }
+  const items = breadcrumbs.map(breadcrumb => {
+    const title = breadcrumb.unlink ? (
+      breadcrumb.route.title
+    ) : (
+      <Link to={breadcrumb.pathname}>{breadcrumb.route.title}</Link>
+    )
+    return { title }
+  })
 
-  return (
-    <Breadcrumb>
-      {cleanupBreadcrumbs(breadcrumbs).map(breadcrumb => (
-        <Breadcrumb.Item key={breadcrumb.key}>
-          {breadcrumb.unlink ? (
-            breadcrumb.breadcrumb
-          ) : (
-            <Link to={breadcrumb.match.url}>{breadcrumb.breadcrumb}</Link>
-          )}
-        </Breadcrumb.Item>
-      ))}
-    </Breadcrumb>
-  )
+  return <Breadcrumb items={items} />
 }
 
 export default memo(BaseBreadcrumb)

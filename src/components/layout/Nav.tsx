@@ -1,44 +1,57 @@
 import { memo } from 'react'
-import { Dropdown, Menu } from 'antd'
+import type { MenuProps } from 'antd'
+import { Dropdown } from 'antd'
 import {
   BellOutlined,
   UserOutlined,
   SettingOutlined,
   LoginOutlined
 } from '@ant-design/icons'
+import { connect, useSelector } from '@umijs/max'
 import avatar from '@/assets/avatar.png'
 import './Nav.less'
 
-const menu = (
-  <Menu>
-    <Menu.Item key="person">
-      <a href="#">
+const items: MenuProps['items'] = [
+  {
+    key: 'person',
+    label: (
+      <>
         <UserOutlined className="menu-item-icon" />
         个人中心
-      </a>
-    </Menu.Item>
-    <Menu.Item key="setting">
-      <a href="#">
+      </>
+    )
+  },
+  {
+    key: 'setting',
+    label: (
+      <>
         <SettingOutlined className="menu-item-icon" />
         个人设置
-      </a>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="logout">
-      <a href="#">
+      </>
+    )
+  },
+  {
+    key: 'logout',
+    label: (
+      <>
         <LoginOutlined className="menu-item-icon" />
         退出登录
-      </a>
-    </Menu.Item>
-  </Menu>
-)
+      </>
+    )
+  }
+]
 
 function Nav() {
+  const theme = useSelector((state: any) => state.theme)
+
   return (
     <div className="layout-nav">
       <BellOutlined className="layout-header-icon" />
-      <Dropdown overlay={menu}>
-        <span className="dropdown-link">
+      <Dropdown overlayClassName="layout-nav-dropdown" menu={{ items }}>
+        <span
+          className="dropdown-link"
+          style={{ height: theme.height, lineHeight: theme.height }}
+        >
           <span className="dropdown-img-wrap">
             <img className="dropdown-img" src={avatar} />
           </span>
@@ -49,4 +62,8 @@ function Nav() {
   )
 }
 
-export default memo(Nav)
+export default memo(
+  connect((state: any) => ({
+    theme: state.theme
+  }))(Nav)
+)

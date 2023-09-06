@@ -3,3 +3,5 @@ node_modules
 .umi-test
 .umi-production
 mock
+unocss.config.ts
+scripts

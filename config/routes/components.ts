@@ -2,14 +2,14 @@
 export default [
   {
     icon: 'iconreloadtime',
-    breadcrumb: '常用组件',
+    title: '常用组件',
     name: 'components',
     path: '/components',
     routes: [
       {
         exact: true,
         icon: 'iconreloadtime',
-        breadcrumb: 'router',
+        title: 'router',
         name: 'components_router',
         path: '/components/router',
         component: '@/pages/components/router'
@@ -17,7 +17,7 @@ export default [
       {
         exact: true,
         icon: 'iconunorderedlist',
-        breadcrumb: 'store',
+        title: 'store',
         name: 'components_store',
         path: '/components/store',
         component: '@/pages/components/store'
@@ -25,7 +25,7 @@ export default [
       {
         exact: true,
         icon: 'iconappstoreadd',
-        breadcrumb: 'provide',
+        title: 'provide',
         name: 'components_provide',
         path: '/components/provide',
         component: '@/pages/components/provide'
@@ -33,7 +33,7 @@ export default [
       {
         exact: true,
         icon: 'iconuser',
-        breadcrumb: 'bus',
+        title: 'bus',
         name: 'components_bus',
         path: '/components/bus',
         component: '@/pages/components/bus'
@@ -41,7 +41,7 @@ export default [
       {
         exact: true,
         icon: 'iconappstore',
-        breadcrumb: 'table',
+        title: 'table',
         name: 'components_table',
         path: '/components/table',
         component: '@/pages/components/table'
@@ -49,7 +49,7 @@ export default [
       {
         exact: true,
         icon: 'iconappstore',
-        breadcrumb: 'fixed-table',
+        title: 'fixed-table',
         name: 'components_fixedtable',
         path: '/components/fixed-table',
         component: '@/pages/components/table/fixed'
@@ -57,23 +57,23 @@ export default [
       {
         exact: true,
         icon: 'iconsetting',
-        breadcrumb: 'draggable',
-        name: 'components_draggable',
-        path: '/components/draggable',
-        component: '@/pages/components/draggable'
+        title: 'sortable',
+        name: 'components_sortable',
+        path: '/components/sortable',
+        component: '@/pages/components/sortable'
       }
     ]
   },
   {
     icon: 'iconappstore',
-    breadcrumb: '其他组件',
+    title: '其他组件',
     name: 'others',
     path: '/others',
     routes: [
       {
         exact: true,
         icon: 'iconsearch',
-        breadcrumb: 'search',
+        title: 'search',
         name: 'search',
         path: '/others/search',
         component: '@/components/search/demo'
@@ -81,7 +81,7 @@ export default [
       {
         exact: true,
         icon: 'iconsetting',
-        breadcrumb: 'react',
+        title: 'react',
         name: 'others_react',
         path: '/others/react',
         component: '@/pages/others/react'

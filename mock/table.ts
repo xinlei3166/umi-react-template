@@ -32,7 +32,7 @@ const response = function () {
 
 // umi mock data
 const proxy = {
-  'GET /api/table/data': (req: any, res: any,) => {
+  'GET /api/mock/data': (req: any, res: any,) => {
     res.send(Mock.mock(response()))
   }
 }

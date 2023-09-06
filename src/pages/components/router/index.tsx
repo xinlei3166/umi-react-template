@@ -1,9 +1,11 @@
 import { Card } from 'antd'
-import { history } from 'umi'
+import { useNavigate } from '@umijs/max'
 
 export default function RouterPage() {
+  const navigate = useNavigate()
+
   const onRedirect = () => {
-    history.push('/')
+    navigate('/')
   }
 
   return (

@@ -1,19 +1,41 @@
-# umi-windicss-template
+# umi-react-template
 
-## Getting Started
+umi-react-template
 
+## Framework packages
+
+Umi4 + React18 + Pinia + Vue Router + TypeScript + Ant Design Vue
+
+## Package Manager
+pnpm
+
+## Quick start
 ```
-git clone https://github.com/xinlei3166/umi-windicss-template.git
+git clone https://github.com/xinlei3166/umi-react-template.git
 ```
 
-Install dependencies,
-
-```bash
-$ yarn
+## Project setup
+```
+pnpm install
 ```
 
-Start the dev server,
-
-```bash
-$ yarn start
+### Compiles and hot-reloads for development
 ```
+pnpm run dev
+```
+
+### Compiles and minifies for production
+```
+pnpm run build
+```
+
+### Run your tests
+```
+pnpm run test
+```
+
+### Lints and fixes files
+```
+pnpm run lint
+```
+

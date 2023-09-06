@@ -9,16 +9,16 @@ interface Fruit {
 }
 
 export default function RouterPage() {
-  const dragOptions = {
+  const sortableOptions = {
     scroll: true,
     animation: 500,
     group: 'group',
-    ghostClass: 'vd-ghost',
-    dragClass: 'vd-ghost',
-    handle: '.vd-handle',
-    filter: '.vd-ignore-elements',
+    ghostClass: 'sortable-ghost',
+    dragClass: 'sortable-ghost',
+    handle: '.sortable-handle',
+    filter: '.sortable-ignore-elements',
     preventOnFilter: false,
-    draggable: '.vd-draggable',
+    draggable: '.sortable-draggable',
     fallbackTolerance: 5
   }
 
@@ -38,23 +38,26 @@ export default function RouterPage() {
   }
 
   function onDragEnd() {
-    //
+    setDrag(false)
   }
 
   return (
     <Card className="h-full">
-      <div className="title">Draggable</div>
-      <div className="draggable-wrap ml-16">
+      <div className="title">Sortable</div>
+      <div className="sortable-wrap ml-16">
         <ReactSortable
           list={state}
           setList={setState}
           tag="div"
-          {...dragOptions}
+          {...sortableOptions}
           onStart={onDragStart}
           onEnd={onDragEnd}
         >
           {state.map(item => (
-            <div className="row vd-draggable vd-handle" key={item.id}>
+            <div
+              className="row sortable-draggable sortable-handle"
+              key={item.id}
+            >
               {item.name}
             </div>
           ))}

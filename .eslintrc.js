@@ -34,6 +34,7 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-unused-vars': 1,
     '@typescript-eslint/no-var-requires': 0,
-    '@typescript-eslint/no-unused-expressions': 0
+    '@typescript-eslint/no-unused-expressions': 0,
+    '@typescript-eslint/consistent-type-imports': 1
   }
 }

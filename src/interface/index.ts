@@ -1,4 +1,3 @@
-import type { IRouteComponentProps } from 'umi'
 import type { Dispatch, SetStateAction } from 'react'
 
 export type Request = Record<string, any>
@@ -43,7 +42,5 @@ export interface TabList {
   tab?: string
   slots?: Object
 }
-
-export type RouteProps = Partial<IRouteComponentProps>
 
 export type SetState<S> = Dispatch<SetStateAction<S>>

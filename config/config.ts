@@ -1,38 +1,41 @@
-import { defineConfig } from 'umi'
-// @ts-ignore
-import AntdDayjsWebpackPlugin from 'antd-dayjs-webpack-plugin'
-import WindiCSSWebpackPlugin from 'windicss-webpack-plugin'
+import { defineConfig } from '@umijs/max'
+import UnoCSS from '@unocss/webpack'
 import routes from './routes'
 
 const vars = {
-  API_URL: ''
+  API_URL: '',
+  APP_TITLE: 'Umi React App'
 }
 
 export default defineConfig({
-  title: false,
-  favicon: '/favicon.ico',
-  // webpack5 不支持 windicss
-  // mfsu: {},
-  // webpack5: {},
-  dynamicImport: {},
-  esbuild: {},
+  title: undefined,
+  favicons: ['/favicon.ico'],
+  mfsu: {
+    esbuild: true,
+    exclude: ['react-router', 'react-router-dom']
+  },
   hash: true,
   antd: {},
+  request: {},
+  model: {},
+  initialState: {},
   dva: {
-    hmr: true,
-    skipModelValidate: false
+    extraModels: []
   },
-  nodeModulesTransform: {
-    type: 'none'
-  },
+  // legacy: {},
   routes,
-  fastRefresh: {},
+  fastRefresh: true,
   targets: {
     ie: 11
   },
+  // @ts-ignore
   chainWebpack(memo, { env, webpack }) {
-    memo.plugin('antd-dayjs-webpack-plugin').use(AntdDayjsWebpackPlugin)
-    memo.plugin('windicss-webpack-plugin').use(WindiCSSWebpackPlugin)
+    memo.plugin('@unocss/webpack').use(UnoCSS)
+    memo.optimization.set('realContentHash', true)
+  },
+  plugins: ['@umijs/plugins/dist/unocss'],
+  unocss: {
+    watch: ['src/**/*.tsx']
   },
   define: {
     ...vars

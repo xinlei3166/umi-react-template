@@ -1,66 +1,91 @@
 {
   "private": true,
   "scripts": {
-    "analyze": "ANALYZE=1 umi dev",
-    "start": "umi dev",
-    "build:dev": "cross-env umi build",
-    "build:github": "cross-env UMI_ENV=github umi build",
-    "build": "cross-env UMI_ENV=online umi build",
-    "postinstall": "umi generate tmp",
+    "preinstall": "npx only-allow pnpm",
+    "prepare": "simple-git-hooks",
+    "postinstall": "max setup",
+    "analyze": "ANALYZE=1 max dev",
+    "dev": "max dev",
+    "build:dev": "cross-env max build",
+    "build:github": "cross-env UMI_ENV=github max build",
+    "build": "cross-env UMI_ENV=online max build",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx && yarn lint:style",
-    "lint:style": "stylelint --fix \"src/**/*.less\" --syntax less",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx",
+    "lint:style": "stylelint --fix \"src/**/*.less\"",
     "test": "umi-test",
-    "test:coverage": "umi-test --coverage"
-  },
-  "gitHooks": {
-    "pre-commit": "lint-staged",
-    "commit-msg": "node ./node_modules/@umijs/fabric/dist/verifyCommit.js"
-  },
-  "lint-staged": {
-    "*.{less,css}": [
-      "stylelint --fix",
-      "git add"
-    ],
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "test:coverage": "umi-test --coverage",
+    "deploy": "zsh scripts/gh-pages.sh"
   },
   "dependencies": {
-    "antd": "^4.17.0-alpha.2",
-    "axios": "^0.21.1",
-    "classnames": "^2.3.1",
-    "mitt": "^3.0.0",
+    "@ant-design/icons": "^5.2.5",
+    "ahooks": "^3.7.8",
+    "antd": "^5.8.4",
+    "axios": "^0.27.2",
+    "classnames": "^2.3.2",
+    "dayjs": "^1.11.9",
+    "dva": "^2.4.1",
+    "mitt": "^3.0.1",
     "mockjs": "^1.1.0",
-    "qs": "^6.10.1",
-    "react": "17.x",
-    "react-dom": "17.x",
-    "react-router-breadcrumbs-hoc": "^4.0.1",
-    "react-sortablejs": "^6.0.0",
-    "react-use": "^17.2.4",
+    "qs": "^6.11.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-helmet-async": "^1.3.0",
+    "react-redux": "^8.1.2",
+    "react-router": "^6.15.0",
+    "react-router-dom": "^6.15.0",
+    "react-sortablejs": "^6.1.4",
+    "redux": "^4.2.1",
     "roadhog-api-doc": "^1.1.2",
-    "sortablejs": "^1.14.0",
-    "umi": "^3.5.18"
+    "sortablejs": "^1.15.0"
   },
   "devDependencies": {
-    "@types/mockjs": "^1.0.4",
+    "@babel/plugin-proposal-decorators": "^7.22.10",
+    "@babel/plugin-transform-class-properties": "^7.22.5",
+    "@types/mockjs": "^1.0.7",
     "@types/qs": "^6.9.7",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/sortablejs": "^1.10.7",
-    "@umijs/fabric": "^2.6.2",
-    "@umijs/plugin-esbuild": "^1.3.1",
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.5.15",
-    "antd-dayjs-webpack-plugin": "^1.0.6",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@types/sortablejs": "^1.15.0",
+    "@umijs/fabric": "^4.0.1",
+    "@umijs/max": "^4.0.76",
+    "@umijs/plugins": "^4.0.78",
+    "@umijs/test": "^4.0.76",
+    "@unocss/cli": "^0.55.2",
+    "@unocss/postcss": "^0.53.5",
+    "@unocss/preset-rem-to-px": "^0.53.5",
+    "@unocss/webpack": "^0.53.5",
     "cross-env": "^7.0.3",
-    "eslint-config-prettier": "^6.13.0",
+    "csstype": "^3.1.2",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^3.4.1",
-    "lint-staged": "^10.0.7",
-    "prettier": "^2.2.0",
-    "typescript": "^4.1.2",
-    "windicss-webpack-plugin": "^1.4.4",
-    "yorkie": "^2.0.0"
+    "lint-staged": "^10.5.4",
+    "picocolors": "latest",
+    "tsx": "latest",
+    "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
+    "simple-git-hooks": "latest",
+    "stylelint": "^15.10.3",
+    "typescript": "^4.9.5",
+    "unocss": "^0.53.5"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged --concurrent false",
+    "commit-msg": "pnpm exec tsx scripts/verifyCommit.ts $1"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "react",
+        "react-dom",
+        "dva-core",
+        "stylelint",
+        "dva"
+      ]
+    }
   }
 }

@@ -1,15 +1,12 @@
 import type { PropsWithChildren } from 'react'
 import { useState } from 'react'
-import { useMount } from 'react-use'
+import { useMount } from 'ahooks'
 import { Card, Input, Button } from 'antd'
-import type { ConnectProps, UserModelState } from 'umi'
-import { connect } from 'umi'
+import { connect, useDispatch, useSelector } from '@umijs/max'
 
-interface StoreProps extends ConnectProps {
-  user: UserModelState
-}
-
-function StorePage({ user, dispatch }: PropsWithChildren<StoreProps>) {
+function StorePage() {
+  const user = useSelector((state: any) => state.user)
+  const dispatch = useDispatch()
   const [name, setName] = useState('君惜')
 
   const onSubmit = () => {

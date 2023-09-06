@@ -1,4 +1,4 @@
-import { useMount } from 'react-use'
+import { useMount } from 'ahooks'
 import { Card, Table } from 'antd'
 import { usePagination } from '@/hooks/pagination'
 import { getData } from '@/api'
@@ -10,10 +10,10 @@ export default function FixedTablePage() {
       key: 'operation',
       render: () => (
         <>
-          <span className="btn" onClick={onEdit}>
+          <span className="text-btn" onClick={onEdit}>
             编辑
           </span>
-          <span className="btn" onClick={onPreview}>
+          <span className="text-btn" onClick={onPreview}>
             预览
           </span>
         </>

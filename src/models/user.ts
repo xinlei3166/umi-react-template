@@ -29,6 +29,7 @@ const user: Model = {
   },
   effects: {
     *setUserinfo(_, { put, call }) {
+      // @ts-ignore
       const payload = yield call(getUserinfo)
       yield put({ type: 'changeUserinfo', payload })
     }

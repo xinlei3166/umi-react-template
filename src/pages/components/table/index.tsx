@@ -1,5 +1,5 @@
 import { useState, useMemo, memo } from 'react'
-import { useMount } from 'react-use'
+import { useMount } from 'ahooks'
 import { Card, Table, Select } from 'antd'
 import Search from '@/components/search'
 import { usePagination } from '@/hooks/pagination'
@@ -47,10 +47,10 @@ export default function TablePage() {
           key: 'operation',
           render: () => (
             <>
-              <span className="btn" onClick={onEdit}>
+              <span className="text-btn" onClick={onEdit}>
                 编辑
               </span>
-              <span className="btn" onClick={onPreview}>
+              <span className="text-btn" onClick={onPreview}>
                 预览
               </span>
             </>

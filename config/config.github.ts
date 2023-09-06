@@ -1,5 +1,5 @@
 export default {
-  base: '/umi-windicss-template/',
-  publicPath: '/umi-windicss-template/',
-  favicon: '/umi-windicss-template/favicon.ico'
+  base: '/umi-react-template/',
+  publicPath: '/umi-react-template/',
+  favicons: ['/umi-react-template/favicon.ico']
 }

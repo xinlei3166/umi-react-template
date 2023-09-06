@@ -2,7 +2,7 @@ export default [
   {
     exact: true,
     hidden: true,
-    breadcrumb: '首页',
+    title: '首页',
     name: 'home',
     path: '/',
     component: '@/pages/home'
@@ -10,7 +10,7 @@ export default [
   {
     exact: true,
     hidden: true,
-    breadcrumb: '登录',
+    title: '登录',
     name: 'login',
     path: '/login',
     component: '@/pages/login'
@@ -18,7 +18,7 @@ export default [
   {
     exact: true,
     hidden: true,
-    breadcrumb: '404',
+    title: '404',
     name: '404',
     path: '/404',
     component: '@/pages/404'

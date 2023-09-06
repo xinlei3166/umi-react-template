@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useMount, useUnmount } from 'react-use'
+import { useMount, useUnmount } from 'ahooks'
 import bus from '@/lib/bus'
 
 export default function B() {
