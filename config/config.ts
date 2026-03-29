@@ -3,7 +3,7 @@ import UnoCSS from '@unocss/webpack'
 import routes from './routes'
 
 const vars = {
-  API_URL: '',
+  API_URL: '/api',
   APP_TITLE: 'Umi React App'
 }
 
@@ -39,4 +39,11 @@ export default defineConfig({
   define: {
     ...vars
   }
+  // proxy: {
+  //   [vars.API_URL]: {
+  //     target: 'http://api.xxx.com', // 你的后端服务器地址
+  //     changeOrigin: true, // 修改请求头中的 Origin 为目标地址，解决跨域
+  //     pathRewrite: { [`^${vars.API_URL}`]: '' } // 重写路径，去掉请求路径中的 '/api' 前缀
+  //   }
+  // }
 })

@@ -2,6 +2,8 @@ import Mock from 'mockjs'
 // @ts-ignore
 import { delay } from 'roadhog-api-doc'
 
+const baseURL = '/api' // 基础URL
+
 // Mock.setup({ timeout: 1000 })
 
 // 获取 mock.Random 对象
@@ -28,11 +30,11 @@ const response = function () {
 }
 
 // 拦截ajax请求，配置mock的数据
-// Mock.mock('/api/table', 'get', response)
+// Mock.mock(`${baseURL}/table`, 'get', response)
 
 // umi mock data
 const proxy = {
-  'GET /api/mock/data': (req: any, res: any,) => {
+  [`GET ${baseURL}/mock/data`]: (req: any, res: any,) => {
     res.send(Mock.mock(response()))
   }
 }

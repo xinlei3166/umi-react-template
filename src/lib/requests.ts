@@ -2,16 +2,15 @@ import axios from 'axios'
 import type { AxiosRequestConfig, Method } from 'axios'
 import qs from 'qs'
 import { message } from 'antd'
-
 axios.defaults.timeout = 2000 // 请求超时时间
-axios.defaults.baseURL = '' // 其他地方请求地址可以省略域名
+axios.defaults.baseURL = API_URL || '' // 基础URL
 axios.defaults.headers.post['Content-Type'] =
   'application/x-www-form-urlencoded' // 全局设置post请求的数据编码格式
 // axios.defaults.headers.common['Authorization'] = 'token' // 认证token
 
 // request 拦截器
 axios.interceptors.request.use(
-  config => {
+  (config: any) => {
     config.data = qs.stringify(config.data)
     // const token = getCookie('名称') 注意使用的时候需要引入cookie方法，推荐js-cookie
     const token = localStorage.getItem('token')
@@ -20,7 +19,7 @@ axios.interceptors.request.use(
     }
     return config
   },
-  error => {
+  (error: any) => {
     return Promise.reject(error)
   }
 )
