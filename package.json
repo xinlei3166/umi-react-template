@@ -9,9 +9,10 @@
     "build:dev": "cross-env max build",
     "build:github": "cross-env UMI_ENV=github max build",
     "build": "cross-env UMI_ENV=online max build",
-    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx",
-    "lint:style": "stylelint --fix \"src/**/*.less\"",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "test": "umi-test",
     "test:coverage": "umi-test --coverage",
     "deploy": "zsh scripts/gh-pages.sh"
@@ -55,15 +56,13 @@
     "@unocss/webpack": "^0.53.5",
     "cross-env": "^7.0.3",
     "csstype": "^3.1.2",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^3.4.1",
     "lint-staged": "^10.5.4",
+    "oxfmt": "^0.42.0",
+    "oxlint": "^1.57.0",
     "picocolors": "latest",
-    "tsx": "latest",
     "postcss": "^8.4.23",
-    "prettier": "^2.8.8",
     "simple-git-hooks": "latest",
-    "stylelint": "^15.10.3",
+    "tsx": "latest",
     "typescript": "^4.9.5",
     "unocss": "^0.53.5"
   },
@@ -72,8 +71,9 @@
     "commit-msg": "pnpm exec tsx scripts/verifyCommit.ts $1"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+    "*": [
+      "oxlint --fix",
+      "oxfmt --no-error-on-unmatched-pattern"
     ]
   },
   "pnpm": {
@@ -81,8 +81,8 @@
       "ignoreMissing": [
         "react",
         "react-dom",
+        "react-redux",
         "dva-core",
-        "stylelint",
         "dva"
       ]
     }

@@ -17,7 +17,6 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    ".eslintrc.js",
     "mock/**/*",
     "src/**/*",
     "config/**/*",

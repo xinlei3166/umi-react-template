@@ -1,7 +1,0 @@
-node_modules
-.umi
-.umi-test
-.umi-production
-mock
-unocss.config.ts
-scripts

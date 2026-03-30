@@ -59,9 +59,8 @@ function _Search(
     onReset: _onReset
   } = props
 
-  const parseValue = (value: string, int: true) => {
-    // eslint-disable-next-line
-    return int ? parseInt(value) : value
+  const parseValue = (value: string, number: true) => {
+    return number ? parseInt(value) : value
   }
 
   const onChange = (key: string, value: any) => {
