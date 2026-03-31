@@ -12,7 +12,11 @@
     "prefer-const": "error",
     "eqeqeq": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+    // react
+    "react/display-name": 0,
+    "react/rules-of-hooks": 0,
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
   },
   "ignorePatterns": [
     ".umi",
