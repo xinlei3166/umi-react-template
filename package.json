@@ -57,8 +57,8 @@
     "cross-env": "^7.0.3",
     "csstype": "^3.1.2",
     "lint-staged": "^10.5.4",
-    "oxfmt": "^0.42.0",
-    "oxlint": "^1.57.0",
+    "oxfmt": "^0.45.0",
+    "oxlint": "^1.60.0",
     "picocolors": "latest",
     "postcss": "^8.4.23",
     "simple-git-hooks": "latest",
@@ -72,7 +72,7 @@
   },
   "lint-staged": {
     "*": [
-      "oxlint --fix",
+      "oxlint --fix --no-error-on-unmatched-pattern",
       "oxfmt --no-error-on-unmatched-pattern"
     ]
   },
