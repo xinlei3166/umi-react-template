@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks'
 import { Card, Table } from 'antd'
-import { usePagination } from '@/hooks/pagination'
 import { getData } from '@/api'
+import { usePagination } from '@/hooks/pagination'
 import { getTableColumns } from './columns'
 
 export default function FixedTablePage() {
@@ -21,8 +21,7 @@ export default function FixedTablePage() {
     }
   ])
 
-  const { pagination, setPagination, loading, setLoading, data, setData } =
-    usePagination()
+  const { pagination, setPagination, loading, setLoading, data, setData } = usePagination()
 
   useMount(init)
 
@@ -48,11 +47,11 @@ export default function FixedTablePage() {
     await init({ pageNum: pag.current, pageSize: pag.pageSize })
   }
 
-  function onEdit() {
+  const onEdit = () => {
     window.open('https://baidu.com')
   }
 
-  function onPreview() {
+  const onPreview = () => {
     window.open('https://baidu.com')
   }
 

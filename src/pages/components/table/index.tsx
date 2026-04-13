@@ -1,9 +1,9 @@
-import { useState, useMemo, memo } from 'react'
 import { useMount } from 'ahooks'
 import { Card, Table, Select } from 'antd'
+import { useState, useMemo, memo } from 'react'
+import { getData } from '@/api'
 import Search from '@/components/search'
 import { usePagination } from '@/hooks/pagination'
-import { getData } from '@/api'
 import { getColumns, getTableColumns } from './columns'
 
 export default function TablePage() {
@@ -25,7 +25,7 @@ export default function TablePage() {
             return (
               <Select
                 value={model.name5}
-                className="!w-240px"
+                className="w-full"
                 allowClear
                 placeholder="请选择性别"
                 getPopupContainer={triggerNode => triggerNode.parentNode}
@@ -60,8 +60,7 @@ export default function TablePage() {
     []
   )
 
-  const { pagination, setPagination, loading, setLoading, data, setData } =
-    usePagination()
+  const { pagination, setPagination, loading, setLoading, data, setData } = usePagination()
 
   useMount(init)
 
@@ -104,11 +103,11 @@ export default function TablePage() {
     await init({ pageNum: pag.current, pageSize: pag.pageSize })
   }
 
-  function onEdit() {
+  const onEdit = () => {
     window.open('https://baidu.com')
   }
 
-  function onPreview() {
+  const onPreview = () => {
     window.open('https://baidu.com')
   }
 

@@ -1,7 +1,8 @@
-import { memo } from 'react'
-import type { PropsWithChildren, HTMLAttributes, ReactNode } from 'react'
 import type { Property } from 'csstype'
+import type { PropsWithChildren, HTMLAttributes, ReactNode } from 'react'
 import {
+  Row,
+  Col,
   Card,
   Input,
   InputNumber,
@@ -12,18 +13,33 @@ import {
   Button
 } from 'antd'
 import classNames from 'classnames'
+import { memo } from 'react'
 import { typeOf } from '@/utils'
 
 interface SearchProps {
   card?: boolean
+  span?: number
+  searchClass?: string
+  searchStyle?: React.CSSProperties
   columns: Record<string, any>[]
   model: Record<string, any>
   setModel: Function
   labelAlign?: Property.TextAlign // left | right
   labelWidth?: string // auto | px
+  showLabel?: boolean
+  componetStyle?: React.CSSProperties
   showSearchBtn?: boolean
   showResetBtn?: boolean
   showBtn?: boolean
+  searchBtnLabel?: string
+  resetBtnLabel?: string
+  showBtnPlaceholder?: string
+  btnPlaceholderWidth?: string
+  btnAlign?: Property.JustifyContent
+  btnSpan?: number
+  btnClass?: string
+  btnStyle?: React.CSSProperties
+  btnInnerStyle?: React.CSSProperties
   extraBtn?: ReactNode
   onEnter?: (...args: any) => {}
   onChange?: (...args: any) => {}
@@ -40,24 +56,40 @@ type SearchType =
   | 'date-picker'
   | 'range-picker'
 
-function _Search(
-  props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivElement>
-) {
+function _Search(props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivElement>) {
   const {
+    span = 6,
+    searchClass = '',
+    searchStyle = {},
     columns = [],
     model = {},
     setModel,
     labelAlign = 'right',
     labelWidth = 'auto',
+    showLabel = true,
+    componetStyle = {},
     showSearchBtn = true,
     showResetBtn = true,
     showBtn = true,
+    searchBtnLabel = '查询',
+    resetBtnLabel = '重置',
+    showBtnPlaceholder = false,
+    btnPlaceholderWidth = '',
+    btnAlign = 'start',
+    btnSpan = undefined,
+    btnClass = '',
+    btnStyle = {},
+    btnInnerStyle = {},
     extraBtn,
     onEnter: _onEnter,
     onChange: _onChange,
     onSearch: _onSearch,
     onReset: _onReset
   } = props
+
+  const mergeColumnStyle = (...styles: any[]) => {
+    return Object.assign({}, componetStyle, ...styles.filter(Boolean))
+  }
 
   const parseValue = (value: string, number: true) => {
     return number ? parseInt(value) : value
@@ -82,24 +114,16 @@ function _Search(
 
   const getSelectOptions = (column: Record<string, any>) => {
     if (typeOf(column.options) === 'array') {
-      return column.options.map(
-        (option: Record<string, any>, optionIndex: number) => (
-          <Select.Option
-            key={optionIndex}
-            value={option[column.valueKey || 'value']}
-          >
-            {option[column.labelKey || 'label']}
-          </Select.Option>
-        )
-      )
+      return column.options.map((option: Record<string, any>, optionIndex: number) => (
+        <Select.Option key={optionIndex} value={option[column.valueKey || 'value']}>
+          {option[column.labelKey || 'label']}
+        </Select.Option>
+      ))
     }
 
     if (typeOf(column.options) === 'object') {
       return Object.entries(column.options).map(([value, label]: any) => (
-        <Select.Option
-          key={value}
-          value={parseValue(value, column.int || true)}
-        >
+        <Select.Option key={value} value={parseValue(value, column.int || true)}>
           {label}
         </Select.Option>
       ))
@@ -110,7 +134,8 @@ function _Search(
     input: (column: Record<string, any>) => (
       <Input
         value={model[column.key]}
-        className="input !w-240px"
+        className="search-item-input search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         allowClear={column.allowClear}
         type={column.type}
         maxLength={column.maxLength}
@@ -122,7 +147,8 @@ function _Search(
     'input-number': (column: Record<string, any>) => (
       <InputNumber
         value={model[column.key]}
-        className="input !w-240px"
+        className="search-item-input-number search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         min={column.min}
         max={column.max}
         precision={column.precision}
@@ -136,7 +162,8 @@ function _Search(
     select: (column: Record<string, any>) => (
       <Select
         value={model[column.key]}
-        className="select !w-240px"
+        className="search-item-select search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         allowClear={column.allowClear}
         mode={column.mode}
         showSearch={column.showSearch}
@@ -151,7 +178,8 @@ function _Search(
     'tree-select': (column: Record<string, any>) => (
       <TreeSelect
         value={model[column.key]}
-        className="select !w-240px"
+        className="search-item-tree-select search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         placeholder={column.placeholder}
         fieldNames={
           column.fieldNames || {
@@ -174,7 +202,8 @@ function _Search(
     cascader: (column: Record<string, any>) => (
       <Cascader
         value={model[column.key]}
-        className="select !w-240px"
+        className="search-item-cascader search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         allowClear={column.allowClear}
         fieldNames={
           column.fieldNames || {
@@ -193,7 +222,8 @@ function _Search(
       // YYYY-MM-DD HH:mm:ss
       <DatePicker
         value={model[column.key]}
-        className="datepicker  !w-240px"
+        className="search-item-date-picker search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         allowClear={column.allowClear}
         format={column.format || 'YYYY-MM-DD'}
         showTime={column.showTime}
@@ -204,7 +234,8 @@ function _Search(
     'range-picker': (column: Record<string, any>) => (
       <DatePicker.RangePicker
         value={model[column.key]}
-        className="datepicker !w-240px"
+        className="search-item-range-picker search-item-component w-full"
+        style={mergeColumnStyle(column.style)}
         allowClear={column.allowClear}
         format={column.format || 'YYYY-MM-DD'}
         showTime={column.showTime}
@@ -215,26 +246,20 @@ function _Search(
   }
 
   return (
-    <div
-      className={classNames(['search', 'flex', 'flex-wrap', 'items-center'])}
-    >
+    <Row className={classNames(['search', searchClass])} style={searchStyle} gutter={[16, 16]}>
       {columns.map((column, index) => (
-        <div
-          key={`column${index}`}
-          className={classNames([
-            'search-item',
-            'mr-20px',
-            'mb-4',
-            column.class ? column.class : ''
-          ])}
+        <Col
+          span={column.span || span}
+          key={`column${column.index || index}`}
+          className={classNames(['search-item', 'flex', 'items-center', column.class])}
         >
-          {column.label ? (
+          {showLabel && column.label ? (
             <span
               className={classNames([
-                'label',
-                { 'label-required': column.required },
-                'inline-block',
-                'mr-2'
+                'search-item-label',
+                'flex-shrink-0',
+                'mr-2',
+                { 'label-required': column.required }
               ])}
               style={{
                 textAlign: labelAlign,
@@ -247,37 +272,57 @@ function _Search(
           {column.render
             ? column.render({ model, column, onChange })
             : contents[column.searchType]?.(column)}
-        </div>
+        </Col>
       ))}
       {showBtn && (
-        <div className="search-item search-btn mb-4 mr-0 ml-auto space-x-4">
-          {showSearchBtn && (
-            <Button type="primary" onClick={onSearch}>
-              查询
-            </Button>
+        <Col flex="1" className={classNames(['search-btn', btnClass])} style={btnStyle}>
+          {showLabel && showBtnPlaceholder && (
+            <span
+              className={classNames(['search-item-label', 'flex-shrink-0', 'mr-2'])}
+              style={{ width: btnPlaceholderWidth || labelWidth }}
+            ></span>
           )}
-          {showResetBtn && <Button onClick={onReset}>重置</Button>}
-          {extraBtn}
-        </div>
+          <div
+            className={classNames([
+              'search-btn-inner',
+              'flex',
+              'items-center',
+              'gap-4',
+              `justify-${btnAlign}`
+            ])}
+            style={btnInnerStyle}
+          >
+            {showSearchBtn && (
+              <Button className="search-btn-btn" type="primary" onClick={onSearch}>
+                查询
+              </Button>
+            )}
+            {showResetBtn && (
+              <Button className="search-btn-btn" onClick={onReset}>
+                重置
+              </Button>
+            )}
+            {extraBtn}
+          </div>
+        </Col>
       )}
-    </div>
+    </Row>
   )
 }
 
-function Search(
-  props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivElement>
-) {
+function Search(props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivElement>) {
   const { className, card = true } = props
 
-  return (
-    <div className={classNames('search-wrap', className)}>
-      {card ? (
-        <Card bodyStyle={{ padding: '20px 24px 4px' }}>
-          <_Search {...props} />
-        </Card>
-      ) : (
-        <_Search {...props} />
-      )}
+  return card ? (
+    <Card
+      className={classNames(['search-card', 'search-wrap', className])}
+      styles={{ body: { padding: '20px' } }}
+    >
+      <_Search {...props} />
+    </Card>
+  ) : (
+    <div className={classNames(['search-wrap', className])}>
+      <_Search {...props} />
     </div>
   )
 }
