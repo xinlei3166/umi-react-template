@@ -47,15 +47,6 @@ interface SearchProps {
   onReset?: (...args: any) => {}
 }
 
-type SearchType =
-  | 'input'
-  | 'input-number'
-  | 'select'
-  | 'tree-select'
-  | 'cascader'
-  | 'date-picker'
-  | 'range-picker'
-
 function _Search(props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivElement>) {
   const {
     span = 6,
