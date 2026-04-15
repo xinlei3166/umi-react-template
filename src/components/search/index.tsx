@@ -266,7 +266,7 @@ function _Search(props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivE
         </Col>
       ))}
       {showBtn && (
-        <Col flex="1" className={classNames(['search-btn', btnClass])} style={btnStyle}>
+        <Col {...(btnSpan ? { span: btnSpan } : { flex: '1' })} className={classNames(['search-btn', btnClass])} style={btnStyle}>
           {showLabel && showBtnPlaceholder && (
             <span
               className={classNames(['search-item-label', 'flex-shrink-0', 'mr-2'])}
@@ -285,12 +285,12 @@ function _Search(props: PropsWithChildren<SearchProps> & HTMLAttributes<HTMLDivE
           >
             {showSearchBtn && (
               <Button className="search-btn-btn" type="primary" onClick={onSearch}>
-                查询
+                {searchBtnLabel}
               </Button>
             )}
             {showResetBtn && (
               <Button className="search-btn-btn" onClick={onReset}>
-                重置
+                {resetBtnLabel}
               </Button>
             )}
             {extraBtn}
